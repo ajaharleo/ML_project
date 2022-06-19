@@ -1,8 +1,3 @@
-# ML_project
-End to end deployment of ML project
-We used 'create -p MLproject python==3.7' to create our virtual environment in our project folder, not at conda location
-conda activate MLproject/ : to activate environment in the project folder
-
 ## Start Machine Learning project.
 
 ### Software and account Requirement.
@@ -96,4 +91,10 @@ docker ps
 Tos stop docker conatiner
 ```
 docker stop <container_id>
+```
+
+
+
+```
+python setup.py install
 ```

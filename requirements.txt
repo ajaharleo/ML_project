@@ -1,7 +1,6 @@
-Flask
-django
-gunicorn
-pandas
-sklearn
 numpy
--e.
+Flask
+gunicorn
+sklearn
+pandas
+-e .
