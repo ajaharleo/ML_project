@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+study/
+
+#Project data
+MLproject
+housing/artifact
+*.log
+
+queries_or_explainer.txt

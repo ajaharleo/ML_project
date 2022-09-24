@@ -1,3 +1,4 @@
+from operator import is_
 from housing.logger import logging
 from housing.exception import HousingException
 from housing.entity.config_entity import DataValidationConfig
@@ -9,6 +10,8 @@ from evidently.model_profile.sections import DataDriftProfileSection
 from evidently.dashboard import Dashboard
 from evidently.dashboard.tabs import DataDriftTab
 import json
+from housing.util import read_yaml_file
+
 
 class DataValidation:
     
@@ -61,8 +64,7 @@ class DataValidation:
     
     def validate_dataset_schema(self)->bool:
         try:
-            validation_status = False
-            
+            validation_status = False    
             #Assigment validate training and testing dataset using schema file
             #1. Number of Column
             #2. Check the value of ocean proximity 
@@ -72,8 +74,28 @@ class DataValidation:
             # NEAR BAY
             # NEAR OCEAN
             #3. Check column names
+            train_df,test_df = self.get_train_and_test_df()
+            schema = read_yaml_file(self.data_validation_config.schema_file_path)
+            if len(schema['columns']) == len(train_df.columns) == len(test_df.columns):
+                is_no_of_columns_correct = True
+            else:
+                is_no_of_columns_correct = False
+            if train_df['ocean_proximity'].dtypes == 'O':
+                train = train_df.copy()
+                train = train_df.drop(columns=['ocean_proximity'],axis=1)
+                test = test_df.copy()
+                test = test_df.drop(columns=['ocean_proximity'],axis=1)
+                for i in train.columns:
+                    if train[i].dtypes==test[i].dtypes == 'O'or train[i].dtypes!=test[i].dtypes:
+                        is_column_type_correct = False
+                        break
+                    is_column_type_correct = True
 
-
+            else:
+                is_column_type_correct = False
+            is_categorical_correct = False
+            if train_df['ocean_proximity'].unique() == test_df['ocean_proximity'].unique() == schema['domain_value']['ocean_proximity']:
+                is_categorical_correct = True
             validation_status = True
             return validation_status 
         except Exception as e:
@@ -94,7 +116,7 @@ class DataValidation:
             os.makedirs(report_dir,exist_ok=True)
 
             with open(report_file_path,"w") as report_file:
-                json.dump(report, report_file, indent=6)
+                json.dump(report, report_file, indent=6) #1
             return report
         except Exception as e:
             raise HousingException(e,sys) from e
@@ -137,3 +159,4 @@ class DataValidation:
             logging.info(f"Data validation artifact: {data_validation_artifact}")
         except Exception as e:
             raise HousingException(e,sys) from e
+

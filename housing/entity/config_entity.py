@@ -10,12 +10,17 @@ DataValidationConfig = namedtuple("DataValidationConfig", ["schema_file_path","r
 DataTransformationConfig = namedtuple("DataTransformationConfig", ["add_bedroom_per_room",
                                                                    "transformed_train_dir",
                                                                    "transformed_test_dir",
+                                                                   "preprocessing_dir",
                                                                    "preprocessed_object_file_path"])
+# add_bedroom_per_room = True if we wanna add this feature else false
+# transformed_train_dir = location of dataset of feature engg.
+# preprocessed_object_file_path = location of feature engg pickle file
 
 
 ModelTrainerConfig = namedtuple("ModelTrainerConfig", ["trained_model_file_path","base_accuracy"])
 
 ModelEvaluationConfig = namedtuple("ModelEvaluationConfig", ["model_evaluation_file_path","time_stamp"])
+# model_evaluation_file_path = details of all models in production
 
 
 ModelPusherConfig = namedtuple("ModelPusherConfig", ["export_dir_path"])

@@ -53,7 +53,6 @@ class Configuartion:
                 data_ingestion_info[DATA_INGESTION_TEST_DIR_KEY]
             )
 
-
             data_ingestion_config=DataIngestionConfig(
                 dataset_download_url=dataset_download_url, 
                 tgz_download_dir=tgz_download_dir, 
@@ -65,6 +64,124 @@ class Configuartion:
             return data_ingestion_config
         except Exception as e:
             raise HousingException(e,sys) from e
+
+    def get_data_validation_config(self) -> DataValidationConfig:
+        try:
+            artifact_dir = self.training_pipeline_config.artifact_dir
+            data_validation_artifact_dir = os.join(
+                artifact_dir,
+                DATA_VALIDATION_ARTIFACT_DIR_NAME,self.time_stamp
+            )
+
+            data_validation_config = self.config_info[DATA_VALIDATION_CONFIG_KEY]
+            schema_file_path = os.path.join(
+                data_validation_artifact_dir,
+                data_validation_config[DATA_VALIDATION_SCHEMA_DIR_KEY],
+                data_validation_config[DATA_VALIDATION_SCHEMA_FILE_NAME_KEY]
+            )
+            report_file_path = os.path.join(
+                data_validation_artifact_dir,data_validation_config[DATA_VALIDATION_REPORT_FILE_NAME_KEY]
+            )
+            report_page_file_path = os.path.join(
+                data_validation_artifact_dir,data_validation_config[DATA_VALIDATION_REPORT_PAGE_FILE_NAME_KEY]
+            )
+            data_validation_config = DataValidationConfig(
+                schema_file_path=schema_file_path,
+                report_file_path=report_file_path,
+                report_page_file_path=report_page_file_path
+            )
+            logging.info(f'Data Validation Config: {data_validation_config}')
+        except Exception as e:
+            raise HousingException(e,sys)
+
+    def get_data_transformation_config(self) ->DataTransformationConfig:
+        try:
+            artifact_dir = self.training_pipeline_config.artifact_dir
+            data_transformation_dir = os.path.join(
+                artifact_dir,
+                DATA_TRANSFORMATION_ARTIFACT_DIR,
+                self.time_stamp
+            )
+            data_transformation_info = self.config_info[DATA_TRANSFORMATION_CONFIG_KEY]
+            add_bedroom_per_room = data_transformation_info[DATA_TRANSFORMATION_ADD_BEDROOM_PER_ROOM_KEY]
+            transformed_train_dir = os.path.join(
+                data_transformation_dir,
+                DATA_TRANSFORMATION_DIR_NAME_KEY,
+                data_transformation_info[DATA_TRANSFORMATION_TRAIN_DIR_NAME_KEY]
+            )
+            transformed_test_dir = os.path.join(
+                data_transformation_dir,
+                DATA_TRANSFORMATION_DIR_NAME_KEY,
+                data_transformation_info[DATA_TRANSFORMATION_TEST_DIR_NAME_KEY]
+            )
+            preprocessing_dir = os.path.join(
+                data_transformation_dir,
+                data_transformation_info[DATA_TRANSFORMATION_PREPROCESSING_DIR_KEY]
+            )
+            preprocessed_object_file_path = data_transformation_info[DATA_TRANSFORMATION_PREPROCESSED_FILE_NAME_KEY]
+            data_transformation_config = DataTransformationConfig(
+                add_bedroom_per_room=add_bedroom_per_room,
+                transformed_train_dir=transformed_train_dir,
+                transformed_test_dir=transformed_test_dir,
+                preprocessing_dir=preprocessing_dir,
+                preprocessed_object_file_path=preprocessed_object_file_path
+            )
+        except Exception as e:
+            raise HousingException(e,sys)
+
+    def get_model_trainer_config(self) ->ModelTrainerConfig:
+        try:
+            artifact_dir = self.training_pipeline_config[MODEL_TRAINER_ARTIFACT_DIR]
+            model_trainer_dir = os.path.join(
+                artifact_dir,
+                MODEL_TRAINER_ARTIFACT_DIR,
+                self.time_stamp
+            )
+            model_trainer_info = self.config_info[MODEL_TRAINER_CONFIG_KEY]
+            trained_model_file_path = os.path.join(
+                model_trainer_dir,MODEL_TRAINER_MODEL_CONFIG_DIR_KEY,
+                MODEL_TRAINER_TRAINED_MODEL_FILE_NAME_KEY
+            )
+        except Exception as e:
+            raise HousingException(e,sys)
+
+    def get_training_pipeline_config(self) ->TrainingPipelineConfig:
+        try:
+            training_pipeline_config = self.config_info[TRAINING_PIPELINE_CONFIG_KEY]
+            artifact_dir = os.path.join(ROOT_DIR,
+            training_pipeline_config[TRAINING_PIPELINE_NAME_KEY],
+            training_pipeline_config[TRAINING_PIPELINE_ARTIFACT_DIR_KEY]
+            )
+
+            training_pipeline_config = TrainingPipelineConfig(artifact_dir=artifact_dir)
+            logging.info(f"Training pipleine config: {training_pipeline_config}")
+            return training_pipeline_config
+        except Exception as e:
+            raise HousingException(e,sys) from e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def get_data_validation_config(self) -> DataValidationConfig:
         try:

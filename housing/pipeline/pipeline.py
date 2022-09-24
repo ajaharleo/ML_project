@@ -61,7 +61,7 @@ class Pipeline(Thread):
             return data_validation.initiate_data_validation()
         except Exception as e:
             raise HousingException(e, sys) from e
-
+'''
     def start_data_transformation(self,
                                   data_ingestion_artifact: DataIngestionArtifact,
                                   data_validation_artifact: DataValidationArtifact
@@ -212,3 +212,4 @@ class Pipeline(Thread):
                 return pd.DataFrame()
         except Exception as e:
             raise HousingException(e,sys) from e
+'''

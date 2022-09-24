@@ -1,4 +1,4 @@
-rom collections import namedtuple
+from collections import namedtuple
 
 
 
