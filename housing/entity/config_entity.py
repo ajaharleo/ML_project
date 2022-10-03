@@ -17,7 +17,7 @@ DataTransformationConfig = namedtuple("DataTransformationConfig", ["add_bedroom_
 # preprocessed_object_file_path = location of feature engg pickle file
 
 
-ModelTrainerConfig = namedtuple("ModelTrainerConfig", ["trained_model_file_path","base_accuracy"])
+ModelTrainerConfig = namedtuple("ModelTrainerConfig", ["trained_model_file_path","base_accuracy","model_config_file_path"])
 
 ModelEvaluationConfig = namedtuple("ModelEvaluationConfig", ["model_evaluation_file_path","time_stamp"])
 # model_evaluation_file_path = details of all models in production

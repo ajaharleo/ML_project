@@ -13,6 +13,7 @@ model_selection:
     search_param_grid:
       fit_intercept:
       - true
+      - false
   module_1:
     class: RandomForestRegressor
     module: sklearn.ensemble
@@ -25,3 +26,4 @@ model_selection:
       - 12
       n_estimators:
       - 100
+      - 200

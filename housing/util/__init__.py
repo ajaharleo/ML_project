@@ -2,7 +2,7 @@ import yaml
 from housing.exception import HousingException
 import os,sys
 import numpy as np
-#import dill
+import dill
 import pandas as pd
 from housing.constant import *
 
@@ -62,9 +62,10 @@ def load_numpy_array_data(file_path: str) -> np.array:
     except Exception as e:
         raise HousingException(e, sys) from e
 
-'''
+
 def save_object(file_path:str,obj):
     """
+    Saves pkl object to file path
     file_path: str
     obj: Any sort of object
     """
@@ -110,4 +111,4 @@ def load_data(file_path: str, schema_file_path: str) -> pd.DataFrame:
 
     except Exception as e:
         raise HousingException(e,sys) from e
-        '''
+        

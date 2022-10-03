@@ -19,6 +19,8 @@ class DataValidation:
     def __init__(self, data_validation_config:DataValidationConfig,
         data_ingestion_artifact:DataIngestionArtifact):
         try:
+            logging.info(f"{'='*20}Data Validation log started.{'=' * 20} \n \ n")
+
             self.data_validation_config = data_validation_config
             self.data_ingestion_artifact = data_ingestion_artifact
         except Exception as e:
@@ -74,8 +76,8 @@ class DataValidation:
             # NEAR BAY
             # NEAR OCEAN
             #3. Check column names
-            train_df,test_df = self.get_train_and_test_df()
-            schema = read_yaml_file(self.data_validation_config.schema_file_path)
+            '''train_df,test_df = self.get_train_and_test_df()
+            schema = read_yaml_file(self.data_validation_config[DATA])
             if len(schema['columns']) == len(train_df.columns) == len(test_df.columns):
                 is_no_of_columns_correct = True
             else:
@@ -97,7 +99,8 @@ class DataValidation:
             if train_df['ocean_proximity'].unique() == test_df['ocean_proximity'].unique() == schema['domain_value']['ocean_proximity']:
                 is_categorical_correct = True
             validation_status = True
-            return validation_status 
+            return validation_status '''
+            pass
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -156,7 +159,10 @@ class DataValidation:
                 is_validated=True,
                 message="Data Validation performed successully."
             )
+            return data_validation_artifact
             logging.info(f"Data validation artifact: {data_validation_artifact}")
         except Exception as e:
             raise HousingException(e,sys) from e
 
+    def __del__(self):
+        logging.info(f"{'='*20}Data Validation log completed.{'=' * 20} \n \ n")
