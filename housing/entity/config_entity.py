@@ -10,7 +10,6 @@ DataValidationConfig = namedtuple("DataValidationConfig", ["schema_file_path","r
 DataTransformationConfig = namedtuple("DataTransformationConfig", ["add_bedroom_per_room",
                                                                    "transformed_train_dir",
                                                                    "transformed_test_dir",
-                                                                   "preprocessing_dir",
                                                                    "preprocessed_object_file_path"])
 # add_bedroom_per_room = True if we wanna add this feature else false
 # transformed_train_dir = location of dataset of feature engg.

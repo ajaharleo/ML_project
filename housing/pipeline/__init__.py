@@ -1,7 +1,7 @@
 from collections import namedtuple
 from datetime import datetime
 import uuid
-from housing.config.configuration import Configuartion
+from housing.config import Configuartion
 from housing.logger import logging,get_log_file_name
 from housing.exception import HousingException
 from threading import Thread
@@ -85,21 +85,6 @@ class Pipeline(Thread):
         except Exception as e:
             raise HousingException(e,sys) from e
 
-    def run_pipeline(self):
-        try:
-            data_ingestion_artifact = self.start_data_ingestion()
-            data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
-            data_transformation_artifact = self.start_data_transformation(
-            data_ingestion_artifact = data_ingestion_artifact,
-            data_validation_artifact = data_validation_artifact
-            )
-
-        except Exception as e:
-            raise HousingException(e, sys) from e
-    
-'''
-    
-
     def start_model_evaluation(self, data_ingestion_artifact: DataIngestionArtifact,
             data_validation_artifact: DataValidationArtifact,
             model_trainer_artifact: ModelTrainerArtifact)->ModelEvaluationArtifact:
@@ -122,6 +107,30 @@ class Pipeline(Thread):
             return model_pusher.initiate_model_pusher()
         except Exception as e:
             raise HousingException(e, sys) from e
+
+    def run_pipeline(self):
+        try:
+            data_ingestion_artifact = self.start_data_ingestion()
+            data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
+            data_transformation_artifact = self.start_data_transformation(
+            data_ingestion_artifact = data_ingestion_artifact,
+            data_validation_artifact = data_validation_artifact
+            )
+            model_trainer_artifact=self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
+
+            model_evaluation_artifact = self.start_model_evaluation(
+                data_ingestion_artifact=data_ingestion_artifact,
+                data_validation_artifact=data_validation_artifact,
+                model_trainer_artifact=model_trainer_artifact)
+
+        except Exception as e:
+            raise HousingException(e, sys) from e
+    
+     
+'''
+    
+
+    
 
     def run_pipeline(self):
         try:
